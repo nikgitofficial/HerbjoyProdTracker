@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { signOut } from "next-auth/react";
+import { handleSignOut } from "@/lib/actions/auth.actions";
 import Image from "next/image";
 import {
   LayoutDashboard,
@@ -285,7 +285,7 @@ export function Sidebar({
                 <p className="text-xs text-slate-400 dark:text-zinc-500 truncate leading-tight">{user?.email ?? ""}</p>
               </div>
               <button
-                onClick={() => signOut({ callbackUrl: "/login" })}
+                onClick={() => handleSignOut()}
                 className="flex-shrink-0 w-7 h-7 rounded-lg flex items-center justify-center text-slate-400 dark:text-zinc-500 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-950/40 transition-colors opacity-0 group-hover:opacity-100"
                 aria-label="Sign out"
                 title="Sign out"
