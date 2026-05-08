@@ -32,6 +32,9 @@ export default auth((req) => {
 
   if (isPublicApi) return NextResponse.next();
 
+  // ✅ Only this line was added
+  if (nextUrl.pathname === "/login") return NextResponse.next();
+
   if (isLoggedIn && isPublicPath)
     return NextResponse.redirect(new URL("/dashboard", nextUrl));
 
