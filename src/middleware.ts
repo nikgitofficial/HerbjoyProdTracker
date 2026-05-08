@@ -32,8 +32,27 @@ export default auth((req) => {
 
   if (isPublicApi) return NextResponse.next();
 
-  // ✅ Only this line was added
-  if (nextUrl.pathname === "/login") return NextResponse.next();
+  // ✅ Replace the old single line with this block
+  if (nextUrl.pathname === "/login") {
+    if (isLoggedIn) {
+      const response = NextResponse.next();
+      const cookiesToClear = [
+        "authjs.session-token",
+        "__Secure-authjs.session-token",
+        "authjs.csrf-token",
+        "__Host-authjs.csrf-token",
+        "authjs.callback-url",
+        "__Secure-authjs.callback-url",
+        "next-auth.session-token",
+        "__Secure-next-auth.session-token",
+        "next-auth.csrf-token",
+        "next-auth.callback-url",
+      ];
+      cookiesToClear.forEach((name) => response.cookies.delete(name));
+      return response;
+    }
+    return NextResponse.next();
+  }
 
   if (isLoggedIn && isPublicPath)
     return NextResponse.redirect(new URL("/dashboard", nextUrl));
